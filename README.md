@@ -41,6 +41,7 @@ You can choose to manually download the necessary weights.
 (Note that the xTrimoPGLM-100B INT4 quantization can be infered in a single A100/800 GPU with 80G memory.)
 ```python
 
+
 # Obtain residue embeddings
 from transformers import AutoModelForMaskedLM, AutoModelForSequenceClassification, AutoModelForTokenClassification, AutoTokenizer, AutoConfig
 import torch
@@ -48,13 +49,19 @@ import torch
 tokenizer  = AutoTokenizer.from_pretrained("biomap-research/xtrimopglm-100b-int4", trust_remote_code=True, use_fast=True)
 config = AutoConfig.from_pretrained("biomap-research/xtrimopglm-100b-int4",  trust_remote_code=True, torch_dtype=torch.half)
 config.is_causal=False
-model = AutoModelForMaskedLM.from_config(config, trust_remote_code=True, torch_dtype=torch.half)
-# # if you don't have the single gpu with 80G memory, try the dispatch load.
-# model = load_checkpoint_and_dispatch(
-#     model, "biomap-research/xtrimopglm-100b-int4", device_map="auto", no_split_module_classes=["xTrimoPGLMBlock"], strict=True, dtype=dtype
-# )
+model = AutoModelForMaskedLM.from_pretrained("biomap-research/xtrimopglm-100b-int4", config = config, torch_dtype=torch.half,trust_remote_code=True)
 if torch.cuda.is_available():
     model = model.cuda()
+
+# # if you don't have the single gpu with 80G memory, try the dispatch load.
+# from accelerate import load_checkpoint_and_dispatch, init_empty_weights
+# with init_empty_weights():
+  # model = AutoModelForMaskedLM.from_config(config, trust_remote_code=True)
+# 
+# model = load_checkpoint_and_dispatch(
+#     model, "<your model cached dir>", device_map="auto", no_split_module_classes=["xTrimoPGLMBlock"], strict=True, dtype=dtype
+# )
+
 model.eval()
 
 seq = 'MILMCQHFSGQFSKYFLAVSSDFCHFVFPIILVSHVNFKQMKRKGFALWNDRAVPFTQGIFTTVMILLQYLHGTG'
@@ -69,7 +76,6 @@ model = AutoModelForSequenceClassification.from_config(config, trust_remote_code
 
 # model for the token-level tasks
 model = AutoModelForTokenClassification.from_config(config, trust_remote_code=True, torch_dtype=torch.bfloat16)
-
 ```
 
 
@@ -83,13 +89,18 @@ import torch
 tokenizer  = AutoTokenizer.from_pretrained("biomap-research/xtrimopglm-100b-int4", trust_remote_code=True, use_fast=True)
 config = AutoConfig.from_pretrained("biomap-research/xtrimopglm-100b-int4",  trust_remote_code=True, torch_dtype=torch.half)
 config.is_causal=True
-model = AutoModelForCausalLM.from_config(config, trust_remote_code=True, torch_dtype=torch.half)
-# # if you don't have the single gpu with 80G memory, try the dispatch load.
-# model = load_checkpoint_and_dispatch(
-#     model, "biomap-research/xtrimopglm-100b-int4", device_map="auto", no_split_module_classes=["xTrimoPGLMBlock"], strict=True, dtype=dtype
-# )
+model = AutoModelForCausalLM.from_pretrained("biomap-research/xtrimopglm-100b-int4", config = config, torch_dtype=torch.half,trust_remote_code=True)
 if torch.cuda.is_available():
     model = model.cuda()
+
+# # if you don't have the single gpu with 80G memory, try the dispatch load.
+# from accelerate import load_checkpoint_and_dispatch, init_empty_weights
+# with init_empty_weights():
+  # model = AutoModelForMaskedLM.from_config(config, trust_remote_code=True)
+# 
+# model = load_checkpoint_and_dispatch(
+#     model, "<your model cached dir>", device_map="auto", no_split_module_classes=["xTrimoPGLMBlock"], strict=True, dtype=dtype
+# )
 model.eval()
 
 gen_kwargs = {'max_length': 256, 'top_p': 0.8, 'temperature':0.9, "num_beams": 1}
@@ -103,10 +114,15 @@ for idx, each in enumerate(prompt):
 For more inference scrpts of other models, please visit the model card of the huggingface page.
 
 
+## Implementation of Pretrain  
+xTrimoPGLM pretraining is based on the [Megatron-DeepSpeed](https://github.com/microsoft/Megatron-DeepSpeed) Framework
+. Details Please refer to [pretrain](./pretrain)
 
 ## LICENSE
 
 The code in this repository is open source under the [Apache-2.0 license](./LICENSE).
+
+
 
 ## Citations
 
