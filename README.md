@@ -8,16 +8,16 @@ xTrimoPGLM is the open-source version of the latest protein language models towa
 
 We evaluated the xTrimoPGLM (xTMLM or xTCLM) and xTrimoPGLM(100B) models on two OOD test sets, one with sequence identity lower than 0.9 with the training set (<0.9 ID) and the other with sequence identity lower than 0.5 with the training set (<0.5 ID). Each OOD dataset comprises approximately 10,000 protein sequences. The MLM perplexity results, compared against ESM2-3B and ESM2-15B and the CLM perplexity againest ProGen2-xlarge (6.4B), are as follows (lower is better):
 
-| Model               | ESM2(3B)| ESM2 (15B) | xTMLM (1B) | xTMLM (3B) | xTMLM (10B) | xT (100B) |
-|:--------------------|:----------:|:----------:|:----------:|:----------:|:--------------------:|:--------------------:|
-| < 0.9 ID           |   7.7   |   7.3    | 9.3    |    7.8    |      7.6    |            **6.7**         | 
-| < 0.5 ID            |  11.5 |  11.0  |  13.5 |   11.9  |   11.6   |         **10.8**          |
+| Model               | ESM2(3B)| ESM2 (15B) | xTMLM (1B) | xTMLM (3B) | xTMLM (10B) | xT (100B) | xT (100B)-INT4 |
+|:--------------------|:----------:|:----------:|:----------:|:----------:|:--------------------:|:--------------------:|:--------------------:|
+| < 0.9 ID           |   7.7   |   7.3    | 9.3    |    7.8    |      7.6    |            **6.7**         |  **6.8**         | 
+| < 0.5 ID            |  11.5 |  11.0  |  13.5 |   11.9  |   11.6   |         **10.7**          | **10.8**          |
 
 
-| Model               | ProGen2-xlarge (6.4B) | xTCLM (1B) | xTCLM (3B) | xTCLM (7B) | xT (100B) |
-|:--------------------|:----------:|:----------:|:----------:|:--------------------:|:--------------------:|
-| < 0.9 ID            |   9.7     | 9.8    |    9.3    |      8.9    |            **8.7**         | 
-| < 0.5 ID            |   14.3    |  14.0  |    13.7  |    13.5   |         **13.3**          |
+| Model               | ProGen2-xlarge (6.4B) | xTCLM (1B) | xTCLM (3B) | xTCLM (7B) | xT (100B) | xT (100B)-INT4 |
+|:--------------------|:----------:|:----------:|:----------:|:--------------------:|:--------------------:|:--------------------:|
+| < 0.9 ID            |   9.7     | 9.8    |    9.3    |      8.9    |            **8.7**         |      **8.9**         | 
+| < 0.5 ID            |   14.3    |  14.0  |    13.7  |    13.5   |         **13.3**          |   **13.5**          |
 
 ## Downstream Protein Understanding Tasks Evaluation
 (TODO)
