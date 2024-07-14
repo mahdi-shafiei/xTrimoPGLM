@@ -108,7 +108,7 @@ prompt=['', 'MLFVVL', 'LDL', 'VTQA']
 
 for idx, each in enumerate(prompt):
     print(f"Begin generating idx: {idx} with prompt {each}")
-    output = model.chat(tokenizer, each)
+    output = model.chat(tokenizer, each, **gen_kwargs)
     print(f"\nEnd generation with length: {len(output.split())} - seqs: {output}\n")
 ```
 For more inference scrpts of other models, please visit the model card of the huggingface page.
